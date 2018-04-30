@@ -22,6 +22,9 @@ class ViewController: UIViewController {
     var tileCenterArray : NSMutableArray = [] // Array para guardar los centros de los tiles
     var tileEmptyCenter: CGPoint = CGPoint(x: 0, y: 0)
     
+    
+    var orderTileArray : NSMutableArray = []
+    
     @IBAction func restarGameBtn(_ sender: UIButton) {
         self.randomTiles()
     }
@@ -82,6 +85,7 @@ class ViewController: UIViewController {
     }
     
     
+    
     func randomTiles(){
         
         let tempTileCenterArray : NSMutableArray = self.tileCenterArray.mutableCopy() as! NSMutableArray // Tener una copia del array para que no falle ni se quede sin elementos, porque más abajo vamos eliminando los elementos del array
@@ -129,6 +133,10 @@ class ViewController: UIViewController {
             }
             
         }
+    
+        
+        
+        
     }
 
 }
