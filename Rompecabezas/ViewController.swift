@@ -11,6 +11,8 @@ import UIKit
 class ViewController: UIViewController {
 
     @IBOutlet weak var board: UIView!
+    @IBOutlet weak var movesLabel: UILabel!
+    
     
     
     
@@ -22,11 +24,12 @@ class ViewController: UIViewController {
     var tileCenterArray : NSMutableArray = [] // Array para guardar los centros de los tiles
     var tileEmptyCenter: CGPoint = CGPoint(x: 0, y: 0)
     
-    
-    var orderTileArray : NSMutableArray = []
+    var movesCount: Int = 0
     
     @IBAction func restarGameBtn(_ sender: UIButton) {
         self.randomTiles()
+        self.movesCount = 0
+        self.movesLabel.text = "movimientos: \(self.movesCount)"
     }
     
     
@@ -36,7 +39,9 @@ class ViewController: UIViewController {
         randomTiles()
         
         
+        
     }
+    
     
     func makeTiles(){
         self.tileArray = []
@@ -68,6 +73,7 @@ class ViewController: UIViewController {
                 tile.textAlignment = NSTextAlignment.center
                 tile.textColor = UIColor.white
                 tile.isUserInteractionEnabled = true
+                tile.number = tileNumber
                 tileNumber = tileNumber + 1
                 self.tileArray.add(tile) // Guardar el tile en el array
                 self.tileCenterX = self.tileCenterX + self.tileWidth
@@ -75,6 +81,7 @@ class ViewController: UIViewController {
             
             self.tileCenterX = tileWidth / 2 // Reiniciar el centro en X
             self.tileCenterY = tileCenterY + self.tileWidth
+            
         }
         
         let lastTile: CustomLabel = self.tileArray.lastObject as! CustomLabel  // el último elemento
@@ -113,7 +120,14 @@ class ViewController: UIViewController {
             //currentTouch.view?.alpha = 0 // desapareciendo el elemento que se tocó
             // Sólo puedo moverlos elementos adyacentes al tile vacío
             
+            
             let touchLabel: CustomLabel = currentTouch.view as! CustomLabel // Label que estoy tocando
+            
+            /*if (self.tileArray.index(of: 0) as! CustomLabel).tileNumber == 1{
+                print("El primero está correcto")
+            }*/
+            
+            
             
             // Distancia entre 2 puntos, en este caso entre el centro del label que estoy tocando y el centro del label vacío, ya que así se calcula si son adyacentes
             let xDif: CGFloat = touchLabel.center.x - self.tileEmptyCenter.x
@@ -130,7 +144,16 @@ class ViewController: UIViewController {
                 touchLabel.center = self.tileEmptyCenter // Centro del label tocado es igual al centro del vacío
                 UIView.commitAnimations()
                 self.tileEmptyCenter = tempCenter // Centro del label vacío es igual al label que toqué
+                self.movesCount = self.movesCount + 1
+                self.movesLabel.text = "movimientos: \(self.movesCount)"
+                
+                
             }
+            
+            
+            
+            
+            
             
         }
     
@@ -144,5 +167,6 @@ class ViewController: UIViewController {
 class CustomLabel : UILabel{
     // Clase que hereda de UILabel y que va a tener un atributo extra, el centro de cada label, para saber el centro de cada tile
     var originCenter: CGPoint = CGPoint(x: 0, y: 0)
+    var number: Int = 0
 }
 
